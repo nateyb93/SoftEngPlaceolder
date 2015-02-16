@@ -1,0 +1,25 @@
+#hitemp {
+    font-size:24px;
+}
+
+#lotemp {
+    font-size:16px;
+}
+
+body{
+    font-family:'Calibri Light';
+}
+
+h1 {
+    font-family:'Calibri Light';
+}
+#weatherinfo {
+    margin-top:-10px;
+    margin-left:5px;
+}
+#forecastdetail {
+    font-size:36px;
+}
+#temps {
+    margin-top:-10px;
+}
