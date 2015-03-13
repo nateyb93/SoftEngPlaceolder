@@ -42,7 +42,7 @@ h1 {
     font-size:24px;
 }
 
-#forecastDiv > div{
+.outerDiv {
     display:block;
     float:left;
     margin-left:20px;
@@ -50,4 +50,21 @@ h1 {
     width:150px;
     height:200px;
 }
+
+.outerDiv:hover {
+    -webkit-animation:backChange 0.3s;
+    animation:backChange 0.3s;
+    background-color:#aaaaaa;
+}
+
+@-webkit-keyframes backChange {
+    from { background-color: #808080; }
+    to { background-color: #aaaaaa; }
+}
+
+@keyframes backChange {
+    from { background-color: #808080; }
+    to { background-color: #aaaaaa; }
+}
+
 
