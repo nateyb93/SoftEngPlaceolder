@@ -66,6 +66,7 @@ function forecastclick() {
                                     Math.floor(data["forecast"]["simpleforecast"]["forecastday"][i]["high"]["fahrenheit"]),
                                     Math.floor(data["forecast"]["simpleforecast"]["forecastday"][i]["low"]["fahrenheit"]),
                                     data["forecast"]["simpleforecast"]["forecastday"][i]["conditions"],
+                                    data["forecast"]["simpleforecast"]["forecastday"][i]["qpf_allday"]["in"],
                                     data["forecast"]["simpleforecast"]["forecastday"][i]["icon_url"]);
             }
         } else {
@@ -80,7 +81,7 @@ function forecastclick() {
     request.send();
 }
 
-function populateForecastDay(day, hiTempText, loTempText, conditionsText, imgSrc) {
+function populateForecastDay(day, hiTempText, loTempText, conditionsText, precip, imgSrc) {
     //get reference to content div
     var forecastDiv = document.getElementById('forecastDiv');
 
@@ -112,11 +113,15 @@ function populateForecastDay(day, hiTempText, loTempText, conditionsText, imgSrc
     var loTemp = document.createElement('span');
     loTemp.className = 'loTemp';
 
+    var precipitation = document.createElement('span');
+    precipitation.className = 'precipitation';
+
     //set data
     daySpan.innerHTML = day;
     hiTemp.innerHTML = hiTempText;
     loTemp.innerHTML = loTempText;
     forecastDetail.innerHTML = conditionsText;
+    precipitation.innerHTML = "Precipitation: \n" + precip + "in";
     pic.src = imgSrc;
 
     //build top-level structures
@@ -125,6 +130,7 @@ function populateForecastDay(day, hiTempText, loTempText, conditionsText, imgSrc
 
     weatherInfo.appendChild(forecastDetail);
     weatherInfo.appendChild(temps);
+    weatherInfo.appendChild(precipitation);
 
     weatherImage.appendChild(pic);
 
