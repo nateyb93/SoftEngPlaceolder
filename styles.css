@@ -1,8 +1,8 @@
-#hitemp {
+.hiTemp {
     font-size:24px;
 }
 
-#lotemp {
+.loTemp {
     font-size:16px;
 }
 
@@ -13,13 +13,41 @@ body{
 h1 {
     font-family:'Calibri Light';
 }
-#weatherinfo {
+
+.weatherInfo {
     margin-top:-10px;
     margin-left:5px;
 }
-#forecastdetail {
-    font-size:36px;
+
+.forecastDetail {
+    font-size:24px;
 }
-#temps {
+
+.temps {
     margin-top:-10px;
 }
+
+.pic {
+    width:100px;
+    height:100px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+   
+}
+
+.daySpan {
+    margin-left:5px;
+    margin-top:5px;
+    font-size:24px;
+}
+
+#forecastDiv > div{
+    display:block;
+    float:left;
+    margin-left:20px;
+    background-color:#808080;
+    width:150px;
+    height:200px;
+}
+
