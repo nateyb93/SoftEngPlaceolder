@@ -20,7 +20,7 @@ function hex(val) {
 }
 
 function calc_background() {
-    var hour = 12;//new Date().getHours();
+    var hour = new Date().getHours();
     var baseVector = [0, 0, 0];
     var addVector = [0, 0, 0];
 
