@@ -1,8 +1,8 @@
 //background color "constants" to use as starting points for certain times during the day
-var TWILIGHT = 6;
-var SUNRISE = 12;
-var SOLARNOON = 18;
-var SUNSET = 24;
+var SUNRISE = 6;
+var SOLARNOON = 12;
+var SUNSET = 18;
+var TWILIGHT = 24;
 
 var SUNRISE_COLORS = [255, 161, 161];
 var SOLARNOON_COLORS = [255, 255, 161];
@@ -12,7 +12,7 @@ var TWILIGHT_COLORS = [161, 161, 255];
 window.onload = function () {
     var color = calc_background();
 
-    document.body.style.backgroundColor = "#a2a1ff";
+    document.body.style.backgroundColor = color;
 };
 
 function hex(val) {
@@ -20,35 +20,33 @@ function hex(val) {
 }
 
 function calc_background() {
-    var hour = new Date().getHours();
+    var hour = 12;//new Date().getHours();
     var baseVector = [0, 0, 0];
     var addVector = [0, 0, 0];
 
-    if (hour < TWILIGHT) {
+    if (hour < SUNRISE) {
         baseVector = TWILIGHT_COLORS;
-        //from twilight till sunrise, twilight colors act as base
-        //and we need to alter R and B values between 161/255
-        //R goes down and B goes up
-        var amountChange = Math.floor(((TWILIGHT - hour) / TWILIGHT) * 94);
+        //twilight through sunrise
+        var amountChange = Math.floor(((6 - (SUNRISE - hour)) / 6) * 94);
         addVector = [amountChange, 0, -(amountChange)];
 
-    } else if (hour < SUNRISE) {
+    } else if (hour < SOLARNOON) {
         baseVector = SUNRISE_COLORS;
         //sunrise through solar noon
-        var amountChange = Math.floor(((SUNRISE - hour) / SUNRISE) * 94);
+        var amountChange = Math.floor(((6 - (SOLARNOON - hour)) / 6) * 94);
         addVector = [0, amountChange, 0];
 
-    } else if (hour < SOLARNOON) {
+    } else if (hour < SUNSET) {
         baseVector = SOLARNOON_COLORS;
         //solarnoon through sunset (previous but reversed
-        var amountChange = Math.floor(((SOLARNOON - hour) / SOLARNOON) * 94);
+        var amountChange = Math.floor(((6 - (SUNSET - hour)) / 6) * 94);
         addVector = [0, -(amountChange), 0];
 
     } else {
         baseVector = SUNSET_COLORS;
         //sunset through twilight
-        var amountChange = Math.floor(((SUNSET - hour) / SUNSET) * 94);
-        addVector = [amountChange, 0, -(amountChange)];
+        var amountChange = Math.floor(((6 - (TWILIGHT - hour)) / 6) * 94);
+        addVector = [-(amountChange), 0, amountChange];
     }
 
     //calculate rgb using vector addition with base/xform vector
