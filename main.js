@@ -226,6 +226,11 @@ function populateForecastDay(day, hiTempText, loTempText, conditionsText, precip
 
     weatherImage.appendChild(pic);
 
+    var tooltipSpan = document.createElement('span');
+    tooltipSpan.className = 'hoverTooltip';
+    tooltipSpan.innerHTML = "Lots of text for testing. Maybe even some more. HOW ABOUT SOME MORE? YOU LIKE THAT?";
+
+    outerDiv.appendChild(tooltipSpan);
     outerDiv.appendChild(daySpan);
     outerDiv.appendChild(weatherImage);
     outerDiv.appendChild(weatherInfo);
