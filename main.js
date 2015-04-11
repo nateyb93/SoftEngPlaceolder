@@ -9,10 +9,20 @@ var SOLARNOON_COLORS = [255, 255, 161];
 var SUNSET_COLORS = SUNRISE_COLORS
 var TWILIGHT_COLORS = [161, 161, 255];
 
+var map;
+
 window.onload = function () {
     var color = calc_background();
 
     document.body.style.backgroundColor = color;
+
+    var mapOptions = {
+        zoom: 4,
+        center: new google.maps.LatLng(35.8282, -97.5795)
+    };
+
+    map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
 };
 
 function hex(val) {
@@ -63,6 +73,10 @@ function addTriVectors(v1, v2) {
     v3[2] = v1[2] + v2[2];
 
     return v3;
+}
+
+function mapClick() {
+
 }
 
 function conditionsclick() {
