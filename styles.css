@@ -50,6 +50,10 @@ html, body {
     padding: 0px
 }
 
+#map-canvas:hover {
+    cursor:pointer;
+}
+
 .temps {
     
 }
