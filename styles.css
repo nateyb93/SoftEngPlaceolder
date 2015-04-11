@@ -51,7 +51,7 @@ html, body {
 }
 
 #map-canvas:hover {
-    cursor:pointer;
+    cursor:pointer !important;
 }
 
 .temps {
