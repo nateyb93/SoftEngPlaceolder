@@ -16,6 +16,10 @@ window.onload = function () {
 
     document.body.style.backgroundColor = color;
 
+    initMap();
+};
+
+function initMap() {
     var mapOptions = {
         zoom: 4,
         center: new google.maps.LatLng(35.8282, -97.5795)
@@ -23,7 +27,11 @@ window.onload = function () {
 
     map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
-};
+
+    google.maps.event.addListener(map, 'click', function (event) {
+        forecastclick(event.latLng.lat(), event.latLng.lng());
+    });
+}
 
 function hex(val) {
     return val.toString(16);
@@ -114,7 +122,7 @@ function conditionsclick() {
 }
 
 //Handles the forecast click function call
-function forecastclick() {
+function forecastclick(lat, long) {
     //API Key
     var key = "898fac3520e03d7d";
 
@@ -133,7 +141,7 @@ function forecastclick() {
     }, 10000);
 
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://api.wunderground.com/api/e37a167f3d3d327a/forecast10day/q/' + zipCode + '.json', true);
+    request.open('GET', 'http://api.wunderground.com/api/e37a167f3d3d327a/forecast10day/q/' + lat + "," + long + '.json', true);
 
     request.onload = function () {
         if (request.status >= 200 && request.status < 400) {

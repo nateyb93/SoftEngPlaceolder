@@ -12,6 +12,7 @@ body{
 
 h1 {
     font-family:'Calibri Light';
+    margin-left:20px;
 }
 
 .weatherInfo {
@@ -19,8 +20,21 @@ h1 {
     margin-left:5px;
 }
 
+#forecastDiv {
+    width:80%;
+    margin:0 auto;
+}
+
 .forecastDetail {
     font-size:24px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:block
+}
+
+.spacer {
+    height:25px;
 }
 
 html, body {
@@ -31,7 +45,7 @@ html, body {
 
 #map-canvas {
     height:50%;
-    width:50%;
+    width:61%;
     margin: 0 auto;
     padding: 0px
 }
@@ -55,19 +69,25 @@ html, body {
     font-size:24px;
 }
 
+.center {
+    width:80%;
+    margin:0 auto;
+}
+
 .outerDiv {
-    display:block;
-    float:left;
+    display:inline-block;
     margin-left:20px;
     background-color:#808080;
     width:150px;
     height:200px;
 }
 
+
 .outerDiv:hover {
     -webkit-animation:backChange 0.3s;
     animation:backChange 0.3s;
     background-color:#aaaaaa;
+    cursor:pointer;
 }
 
 @-webkit-keyframes backChange {
