@@ -9,8 +9,13 @@
 
     <h1 id="location">WeatherActive</h1>
 
-    <button id="forecastbutton" onclick="forecastclick()">Forecast</button>
-    <input type="text" placeholder="ZIP Code" id="zipText" />
+    <div class="userinput" align="center">
+        <button id="forecastbutton" onclick="zipEntryClick()" class="bigButton">Forecast</button>
+        <input type="text" placeholder="ZIP Code" id="zipText" class="bigText" />
+    </div>
+
+    <div class="spacer"></div>
+    
 
     <link rel="stylesheet" type="text/css" href="styles.css"/>
 
