@@ -184,7 +184,7 @@ function sendWeatherRequest(urlParam) {
                                     data["forecast"]["simpleforecast"]["forecastday"][i]["conditions"],
                                     data["forecast"]["txt_forecast"]["forecastday"][i * 2]["fcttext"],
                                     data["forecast"]["simpleforecast"]["forecastday"][i]["qpf_allday"]["in"],
-                                    data["forecast"]["simpleforecast"]["forecastday"][i]["icon_url"]);
+                                    data["forecast"]["simpleforecast"]["forecastday"][i]["icon"]);
             }
         } else {
 
@@ -243,7 +243,7 @@ function populateForecastDay(date, hiTempText, loTempText, conditionsText, detai
     hiTemp.innerHTML = hiTempText;
     loTemp.innerHTML = loTempText;
     forecastDetail.innerHTML = conditionsText;
-    pic.src = imgSrc;
+    pic.src = "Icons/" + imgSrc + ".svg";
 
     //build top-level structures
     temps.appendChild(hiTemp);

@@ -4,6 +4,7 @@
 
 .loTemp {
     font-size:16px;
+    margin-left:1%;
 }
 
 body{
@@ -12,7 +13,7 @@ body{
 
 h1 {
     font-family:'Calibri Light';
-    padding-left:20px;
+    padding-left:2%;
     width:100%;
     background:#14edd9;
     margin-top:0px;
@@ -28,7 +29,8 @@ h1 {
 .bigButton {
     height:50px;
     width:10%;
-    font-size:25px;
+    font-size:150%;
+    text-overflow:ellipsis;
     background: #aaaaaa;
     border:2px solid black;
 }
@@ -46,7 +48,6 @@ h1 {
 }
 
 .weatherInfo {
-    margin-top:-10px;
     margin-left:5px;
 }
 
@@ -89,8 +90,8 @@ html, body {
 }
 
 .pic {
-    width:100px;
-    height:100px;
+    width:80%;
+    height:50%;
     display:block;
     margin-left:auto;
     margin-right:auto;
@@ -110,12 +111,12 @@ html, body {
 
 .outerDiv {
     display:inline-block;
-    margin-left:20px;
-    background-color:#808080;
+    margin-left:3%;
+    background-color:#bbbbbb;
     outline:1px solid white;
     border-radius:2px;
-    width:150px;
-    height:200px;
+    width:11%;
+    height:8%;
 }
 
 
@@ -168,5 +169,3 @@ html, body {
     from { background-color: #808080; }
     to { background-color: #aaaaaa; }
 }
-
-
