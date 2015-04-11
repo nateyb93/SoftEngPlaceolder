@@ -1,4 +1,6 @@
 //background color "constants" to use as starting points for certain times during the day
+var clickable = true;
+
 var SUNRISE = 6;
 var SOLARNOON = 12;
 var SUNSET = 18;
@@ -83,10 +85,6 @@ function addTriVectors(v1, v2) {
     return v3;
 }
 
-function mapClick() {
-
-}
-
 function conditionsclick() {
     var key = "898fac3520e03d7d";
     var hitemp = document.getElementById('hitemp');
@@ -123,6 +121,11 @@ function conditionsclick() {
 
 //Handles the forecast click function call
 function mapClick(lat, long) {
+    if (!clickable) {
+        return;
+    }
+
+    clickable = false;
 
     var zipText = document.getElementById('zipText');
     var zipCode = zipText.value;
@@ -130,11 +133,8 @@ function mapClick(lat, long) {
     //buttons from the page
     var btnForecast = document.getElementById('forecastbutton');
 
-    //PREVENT API OVERUSAGE
-    btnForecast.disabled = true;
-
     setTimeout(function () {
-        btnForecast.disabled = false;
+        clickable = true;
     }, 10000);
 
     sendWeatherRequest(lat + ',' + long);
@@ -208,7 +208,7 @@ function populateForecastDay(date, hiTempText, loTempText, conditionsText, detai
     var forecastDiv = document.getElementById('forecastDiv');
 
     var daySpan = document.createElement('span');
-    daySpan.className = 'daySpan';
+    daySpan.className = 'daySpan no-overflow';
 
     //initializes weather controls
     var outerDiv = document.createElement('div');
@@ -224,7 +224,7 @@ function populateForecastDay(date, hiTempText, loTempText, conditionsText, detai
     weatherInfo.className = 'weatherInfo';
 
     var forecastDetail = document.createElement('span');
-    forecastDetail.className = 'forecastDetail';
+    forecastDetail.className = 'forecastDetail no-overflow';
 
     var temps = document.createElement('div');
     temps.className = 'temps';
@@ -233,7 +233,7 @@ function populateForecastDay(date, hiTempText, loTempText, conditionsText, detai
     hiTemp.className = 'hiTemp';
 
     var loTemp = document.createElement('span');
-    loTemp.className = 'loTemp';
+    loTemp.className = 'loTemp no-overflow';
 
     var precipitation = document.createElement('span');
     precipitation.className = 'precipitation';
