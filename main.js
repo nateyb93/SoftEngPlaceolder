@@ -21,6 +21,7 @@ window.onload = function () {
     initMap();
 };
 
+//initializes the map control on the page
 function initMap() {
     var mapOptions = {
         zoom: 4,
@@ -35,10 +36,12 @@ function initMap() {
     });
 }
 
+//converts a number to its corresponding hex string representation.
 function hex(val) {
     return val.toString(16);
 }
 
+//Calculates the background color based on the time of day
 function calc_background() {
     var hour = new Date().getHours();
     var baseVector = [0, 0, 0];
@@ -76,6 +79,7 @@ function calc_background() {
     
 }
 
+//helper for adding two 1x3 vectors together.
 function addTriVectors(v1, v2) {
     v3 = [0, 0, 0];
     v3[0] = v1[0] + v2[0];
@@ -85,6 +89,7 @@ function addTriVectors(v1, v2) {
     return v3;
 }
 
+//handles conditions click
 function conditionsclick() {
     var key = "898fac3520e03d7d";
     var hitemp = document.getElementById('hitemp');
@@ -140,6 +145,7 @@ function mapClick(lat, long) {
     sendWeatherRequest(lat + ',' + long);
 }
 
+//handles click function for zip code
 function zipEntryClick() {
     var zipText = document.getElementById('zipText');
     var zipCode = zipText.value;
@@ -158,6 +164,7 @@ function zipEntryClick() {
 
 }
 
+//Sends weather request to wunderground
 function sendWeatherRequest(urlParam) {
     var key = "898fac3520e03d7d";
     var request = new XMLHttpRequest();
@@ -168,9 +175,9 @@ function sendWeatherRequest(urlParam) {
             var data = JSON.parse(request.responseText);
 
             //Removes all children from forecast div
-            var forecastDiv = document.getElementById('forecastDiv');
-            while (forecastDiv.hasChildNodes()) {
-                forecastDiv.removeChild(forecastDiv.lastChild);
+            var forecastList = document.getElementById('forecastList');
+            while (forecastList.hasChildNodes()) {
+                forecastList.removeChild(forecastList.lastChild);
             }
             for (var i = 0; i < 7; i++) {
                 var fullDate = prettyDate(data["forecast"]["simpleforecast"]["forecastday"][i]["date"]["weekday"],
@@ -178,7 +185,8 @@ function sendWeatherRequest(urlParam) {
                                           data["forecast"]["simpleforecast"]["forecastday"][i]["date"]["day"],
                                           data["forecast"]["simpleforecast"]["forecastday"][i]["date"]["year"]);
 
-                populateForecastDay(fullDate,
+                populateForecastDay(i,
+                                    fullDate,
                                     Math.floor(data["forecast"]["simpleforecast"]["forecastday"][i]["high"]["fahrenheit"]),
                                     Math.floor(data["forecast"]["simpleforecast"]["forecastday"][i]["low"]["fahrenheit"]),
                                     data["forecast"]["simpleforecast"]["forecastday"][i]["conditions"],
@@ -198,14 +206,23 @@ function sendWeatherRequest(urlParam) {
     request.send();
 }
 
+//Returns a pretty-looking date for overlay
 function prettyDate(weekday, month, day, year) {
     return weekday + " " + month + " " + day + ", " + year;
 }
 
 //Populates one day of forecast display with the specified information
-function populateForecastDay(date, hiTempText, loTempText, conditionsText, detailText, precip, imgSrc) {
+function populateForecastDay(forId, date, hiTempText, loTempText, conditionsText, detailText, precip, imgSrc) {
     //get reference to content div
-    var forecastDiv = document.getElementById('forecastDiv');
+    var forecastList = document.getElementById('forecastList');
+
+    var radioLabel = document.createElement('label');
+    radioLabel.htmlFor = 'radio' + forId;
+
+    var radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.id = 'radio' + forId;
+    radio.name = 'forecast';
 
     var daySpan = document.createElement('span');
     daySpan.className = 'daySpan no-overflow';
@@ -257,14 +274,19 @@ function populateForecastDay(date, hiTempText, loTempText, conditionsText, detai
 
     var tooltipSpan = getWeatherTooltip(date, detailText, precip);
 
-    outerDiv.appendChild(tooltipSpan);
     outerDiv.appendChild(daySpan);
     outerDiv.appendChild(weatherImage);
     outerDiv.appendChild(weatherInfo);
 
-    forecastDiv.appendChild(outerDiv);
+    radioLabel.appendChild(radio);
+    radioLabel.appendChild(tooltipSpan);
+    radioLabel.appendChild(outerDiv);
+    
+    forecastList.appendChild(radioLabel);
+
 }
 
+//constructs a weather tooltip for hover action on forecast elements
 function getWeatherTooltip(fullDate, detailText, precip) {
     var tooltipDiv = document.createElement('div');
     tooltipDiv.className = 'hoverTooltip';

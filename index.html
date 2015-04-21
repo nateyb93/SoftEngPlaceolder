@@ -9,24 +9,33 @@
 
     <h1 id="location">WeatherActive</h1>
 
-    <div class="userinput" align="center">
-        <button id="forecastbutton" onclick="zipEntryClick()" class="bigButton">Forecast</button>
-        <input type="text" placeholder="ZIP Code" id="zipText" class="bigText" />
-    </div>
-
     <div class="spacer"></div>
-    
 
     <link rel="stylesheet" type="text/css" href="styles.css"/>
 
     <script src="main.js" type="text/javascript"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
-    <div align="center" id="map-canvas"></div>
-    <div class="spacer"></div>
-    <div align="left" class="center">
-        <div id="forecastDiv"></div>
+    <div class="page_left">
+        <div class="userinput">
+            <button id="forecastbutton" onclick="zipEntryClick()" class="bigButton">Forecast</button>
+            <input type="text" placeholder="ZIP Code" id="zipText" class="bigText" />
+        </div>
+
+        <div class="spacer"></div>
+
+        <div id="map-canvas"></div>
+        <div class="spacer"></div>
+        <div align="left" class="center">
+            <div id="forecastDiv">
+                <form id="forecastList" name="forecastContainers"></form>
+            </div>
+        </div>
     </div>
+    <div class="page_right">
+        LOTS OF STUFF
+    </div>
+    
 
     <!--<button id="conditionsbutton" onclick="conditionsclick()">Conditions</button>-->
 </body>
