@@ -9,6 +9,7 @@
 
 body{
     font-family:'Calibri Light';
+    overflow-x:hidden;
 }
 
 h1 {
@@ -20,6 +21,10 @@ h1 {
     margin-top:0px;
     padding-top:1%;
     font-size:large;
+}
+
+h2 {
+    font-size:2vw;
 }
 
 .page_left {
@@ -39,12 +44,12 @@ h1 {
 }
 
 .userinput {
-    width:100%;
+    width:98%;
 }
 
 .bigButton {
     height:100%;
-    width:11%;
+    width:14%;
     font-size:1.8vw;
     text-overflow:ellipsis;
     background: #aaaaaa;
@@ -53,7 +58,7 @@ h1 {
 
 .bigText {
     height:100%;
-    width:82%;
+    width:calc(85% - 8px);
     font-size:2vw;
     padding-left:10px;
 }
@@ -173,7 +178,7 @@ label {
 }
 
 .hoverTooltip > span {
-    font-size:2vw;
+    font-size:1vw;
 }
 
 .outerDiv:hover + .hoverTooltip {
