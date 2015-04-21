@@ -11,6 +11,8 @@ var SOLARNOON_COLORS = [255, 255, 161];
 var SUNSET_COLORS = SUNRISE_COLORS
 var TWILIGHT_COLORS = [161, 161, 255];
 
+var forecastText = [];
+
 var map;
 
 window.onload = function () {
@@ -143,6 +145,7 @@ function mapClick(lat, long) {
     }, 10000);
 
     sendWeatherRequest(lat + ',' + long);
+    updateLocationText(lat, long);
 }
 
 //handles click function for zip code
@@ -168,6 +171,7 @@ function zipEntryClick() {
 function sendWeatherRequest(urlParam) {
     var key = "898fac3520e03d7d";
     var request = new XMLHttpRequest();
+
     request.open('GET', 'http://api.wunderground.com/api/' + key + '/forecast10day/q/' + urlParam + '.json', true);
 
     request.onload = function () {
@@ -176,6 +180,7 @@ function sendWeatherRequest(urlParam) {
 
             //Removes all children from forecast div
             var forecastList = document.getElementById('forecastList');
+
             while (forecastList.hasChildNodes()) {
                 forecastList.removeChild(forecastList.lastChild);
             }
@@ -185,7 +190,14 @@ function sendWeatherRequest(urlParam) {
                                           data["forecast"]["simpleforecast"]["forecastday"][i]["date"]["day"],
                                           data["forecast"]["simpleforecast"]["forecastday"][i]["date"]["year"]);
 
-                populateForecastDay(i,
+                var forecastDetail = {};
+                forecastDetail.Date = fullDate;
+                forecastDetail.Text = data["forecast"]["txt_forecast"]["forecastday"][i * 2]["fcttext"];
+                forecastDetail.Precipitation = data["forecast"]["simpleforecast"]["forecastday"][i]["qpf_allday"]["in"];
+                
+                forecastText[i] = forecastDetail;
+
+                populateForecastDay(i, 
                                     fullDate,
                                     Math.floor(data["forecast"]["simpleforecast"]["forecastday"][i]["high"]["fahrenheit"]),
                                     Math.floor(data["forecast"]["simpleforecast"]["forecastday"][i]["low"]["fahrenheit"]),
@@ -201,9 +213,27 @@ function sendWeatherRequest(urlParam) {
 
     request.onerror = function () {
         pic.src = "http://d15uu3l1sro2ln.cloudfront.net/wp-content/uploads/2011/06/pip_boy_thumbs_up.jpg";
+        
     }
 
     request.send();
+}
+
+function updateLocationText(lat, long) {
+    var geocoder = new google.maps.Geocoder();
+    var latLng = new google.maps.LatLng(lat, long);
+
+    geocoder.geocode({ 'latLng': latLng }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var locationText = document.getElementById('location');
+            if (results[1]) {
+                locationText.innerHTML = results[1].formatted_address;
+            } else {
+                locationText.innerHTML = lat + ', ' + long;
+            }
+            
+        }
+    });
 }
 
 //Returns a pretty-looking date for overlay
@@ -223,6 +253,10 @@ function populateForecastDay(forId, date, hiTempText, loTempText, conditionsText
     radio.type = 'radio';
     radio.id = 'radio' + forId;
     radio.name = 'forecast';
+    radio.onchange = function () {
+        onForecastClick(forId);
+    };
+    
 
     var daySpan = document.createElement('span');
     daySpan.className = 'daySpan no-overflow';
@@ -272,37 +306,30 @@ function populateForecastDay(forId, date, hiTempText, loTempText, conditionsText
 
     weatherImage.appendChild(pic);
 
-    var tooltipSpan = getWeatherTooltip(date, detailText, precip);
 
     outerDiv.appendChild(daySpan);
     outerDiv.appendChild(weatherImage);
     outerDiv.appendChild(weatherInfo);
 
     radioLabel.appendChild(radio);
-    radioLabel.appendChild(tooltipSpan);
     radioLabel.appendChild(outerDiv);
     
     forecastList.appendChild(radioLabel);
 
 }
 
-//constructs a weather tooltip for hover action on forecast elements
-function getWeatherTooltip(fullDate, detailText, precip) {
-    var tooltipDiv = document.createElement('div');
-    tooltipDiv.className = 'hoverTooltip';
-    
-    var fullDateSpan = document.createElement('h2');
-    fullDateSpan.innerHTML = fullDate + "<br/>";
 
-    var weatherDetails = document.createElement('span');
-    weatherDetails.innerHTML = detailText + "<br/><br/>";
+function onForecastClick(index) {
+    setDetailView(forecastText[index]);
+}
 
-    var precipitation = document.createElement('span');
-    precipitation.innerHTML = "Precipitation: " + precip + "in.<br/><br/>";
+function setDetailView(wObj) {
+    var fullDateSpan = document.getElementById('detailDate');
+    fullDateSpan.innerHTML = wObj.Date;
 
-    tooltipDiv.appendChild(fullDateSpan);
-    tooltipDiv.appendChild(weatherDetails);
-    tooltipDiv.appendChild(precipitation);
+    var weatherDetails = document.getElementById('detailText');
+    weatherDetails.innerHTML = wObj.Text;
 
-    return tooltipDiv;
+    var precipitation = document.getElementById('detailPrecipitation');
+    precipitation.innerHTML = 'Precipitation: ' + wObj.Precipitation + 'in.';
 }

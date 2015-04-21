@@ -6,9 +6,8 @@
     <title>WeatherActive</title>
 </head>
 <body>
-    <div style="height:100%">
-
-        <h1 id="location">WeatherActive</h1>
+    <div class="full_page">
+        <h1 id="pageTitle">WeatherActive</h1>
 
         <link rel="stylesheet" type="text/css" href="styles.css" />
 
@@ -21,18 +20,32 @@
                 <input type="text" placeholder="ZIP Code" id="zipText" class="bigText" />
             </div>
 
+            <div class="spacer"></div>
+
             <div id="map-canvas"></div>
+
             <div align="left" class="center">
+                <h1 id="location">Select a location by clicking on the map above or by typing in a zip code.</h1>
                 <div id="forecastDiv">
                     <form id="forecastList" name="forecastContainers"></form>
                 </div>
             </div>
         </div>
         <div class="page_right">
-            LOTS OF STUFF
+            <div class="weatherHistory">
+                <div class="date_input">
+                </div>
+                
+            </div>
+            <div class="textForecast">
+                <h2 id="detailDate"></h2>
+                <p id="detailText"></p>
+                <span id="detailPrecipitation"></span>
+            </div>
         </div>
-
     </div>
+    
+    
 
     <!--<button id="conditionsbutton" onclick="conditionsclick()">Conditions</button>-->
 </body>
