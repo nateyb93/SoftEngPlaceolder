@@ -33,10 +33,15 @@
         </div>
         <div class="page_right">
             <div class="weatherHistory">
-                <div class="relative_absolute">
+                <h1 class="historyHeader">Weather history</h1>
 
-                    <input type="datetime-local" id="dateSelector" />
-                    <button id="submitDate">Go</button>
+                <div id="historyContent">
+                    <span>Click below to select a date to view history from.</span>
+                </div>
+                
+                <div class="relative_absolute">
+                    <input type="date" id="dateSelector" />
+                    <button id="submitDate" onclick="updateWeatherHistory()">Go</button>
                     
                 </div>
             </div>
@@ -46,7 +51,15 @@
                 <span id="detailPrecipitation"></span>
             </div>
         </div>
+
+        <div class="bottom-left_fixed">
+            <a href="http://api.wunderground.com/weather/api/d/docs" target="_blank">
+                <span>Powered by:</span>
+                <img src="http://icons.wxug.com/logos/PNG/wundergroundLogo_4c_horz.png" class="icon" />
+            </a>
+        </div>
     </div>
+    
     
     
 

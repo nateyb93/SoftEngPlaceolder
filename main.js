@@ -15,6 +15,9 @@ var forecastText = [];
 
 var map;
 
+var currentLat;
+var currentLong;
+
 window.onload = function () {
     var color = calc_background();
 
@@ -22,6 +25,7 @@ window.onload = function () {
 
     initMap();
 };
+
 
 //initializes the map control on the page
 function initMap() {
@@ -92,28 +96,30 @@ function addTriVectors(v1, v2) {
 }
 
 //handles conditions click
-function conditionsclick() {
+function sendHistoryRequest(dateStr, locStr) {
     var key = "898fac3520e03d7d";
-    var hitemp = document.getElementById('hitemp');
-    var lotemp = document.getElementById('lotemp');
-    var pic = document.getElementById('pic');
-    var info = document.getElementById('forecastdetail');
-    var location = document.getElementById('location');
+    var historyDiv = document.getElementById('historyContent');
 
-    var btnForecast = document.getElementById('forecastbutton');
-    var btnCurrent = document.getElementById('conditionsbutton');
+    while (historyDiv.hasChildNodes()) {
+        historyDiv.removeChild(historyDiv.lastChild);
+    }
 
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://api.wunderground.com/api/e37a167f3d3d327a/geolookup/conditions/q/IA/97203.json', true);
+    request.open('GET', 'http://api.wunderground.com/api/e37a167f3d3d327a/history_' + dateStr + '/q/' + locStr + '.json', true);
 
     request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
+            while (historyDiv.hasChildNodes()) {
+                historyDiv.removeChild(historyDiv.lastChild);
+            }
             var data = JSON.parse(request.responseText);
-            pic.src = data["current_observation"]["icon_url"];
-            hitemp.innerHTML = Math.floor(data["current_observation"]["temp_f"]).toString();
-            lotemp.innerHTML = Math.floor(data["current_observation"]["temp_f"]).toString();
-            info.innerHTML = data["current_observation"]["weather"];
-            location.innerHTML = data["location"]["city"];
+            var historyPeriods = data['history']['observations'];
+            for (var i = 0; i < historyPeriods.length; i++) {
+                var period = historyPeriods[i];
+                addHistoryPeriod(period['date']['hour'] + ':' + period['date']['min'],
+                                 period['tempi'] + 'F',
+                                 period['conds']);
+            }
         } else {
 
         }
@@ -126,8 +132,38 @@ function conditionsclick() {
     request.send();
 }
 
+function addHistoryPeriod(timeStr, tempStr, condStr) {
+    var historyPeriodDiv = document.createElement('div');
+    historyPeriodDiv.className = 'historyPeriod';
+
+    var timeSpan = document.createElement('span');
+    timeSpan.className = 'historyTime';
+    timeSpan.innerHTML = timeStr + '<br/>';
+    
+    var tempSpan = document.createElement('span');
+    tempSpan.className = 'historyTemp';
+    tempSpan.innerHTML = tempStr + '<br/>';
+
+    var condSpan = document.createElement('span');
+    condSpan.className = 'historyCond';
+    condSpan.innerHTML = condStr + '<br/><br/>';
+
+    historyPeriodDiv.appendChild(timeSpan);
+    historyPeriodDiv.appendChild(tempSpan);
+    historyPeriodDiv.appendChild(condSpan);
+
+
+    var historyDiv = document.getElementById('historyContent');
+    historyDiv.appendChild(historyPeriodDiv);
+
+    
+}
+
 //Handles the forecast click function call
 function mapClick(lat, long) {
+    currentLat = lat;
+    currentLong = long;
+
     if (!clickable) {
         return;
     }
@@ -332,4 +368,13 @@ function setDetailView(wObj) {
 
     var precipitation = document.getElementById('detailPrecipitation');
     precipitation.innerHTML = 'Precipitation: ' + wObj.Precipitation + 'in.';
+}
+
+function updateWeatherHistory() {
+    var dateInput = document.getElementById('dateSelector');
+    var unformattedDate = dateInput.value;
+
+    var formattedDate = unformattedDate.replace('-', '');
+
+    sendHistoryRequest(formattedDate, currentLat + ',' + currentLong);
 }

@@ -4,7 +4,7 @@ body, html {
 }
 
 .full_page {
-    height:90%;
+    height:92%;
     width:100%;
 }
 
@@ -46,28 +46,48 @@ body{
     
 }
 
+#historyContent {
+    height:80%;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:10px;
+}
+
+.historyPeriod {
+    border-bottom:1px solid #888888;
+}
+
 .relative_absolute {
     width:100%;
-    height:100%;
+    height:calc(10% - 10px);
     position:relative;
 }
 
 #dateSelector {
     position:absolute;
-    left:0;
-    bottom:0;
+    width:60%;
+    left:5px;
+    bottom:5px;
     clear:both;
+}
+
+.historyHeader {
+    height:10%;
+    padding:0;
+    margin:5px 5px;
 }
 
 #submitDate {
     position:absolute;
-    right:0;
-    bottom:0;
+    width:30%;
+    right:5px;
+    bottom:5px;
     clear:both;
-}
-
-.date_entry {
-    width:calc(100% - 6px);
 }
 
 
@@ -242,4 +262,20 @@ label {
 @keyframes tooltipAppear {
     from { opacity:0.0; }
     to { opacity : 0.8; }
+}
+
+.bottom-left_fixed {
+    position:fixed;
+    top:5px;
+    right:10px;
+    
+}
+
+.icon {
+    height:30px;
+}
+
+a {
+    text-decoration: none;
+    color: #000000;
 }
