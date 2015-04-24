@@ -95,7 +95,7 @@ function addTriVectors(v1, v2) {
     return v3;
 }
 
-//handles conditions click
+//handles history click
 function sendHistoryRequest(dateStr, locStr) {
     var key = "898fac3520e03d7d";
     var historyDiv = document.getElementById('historyContent');
@@ -132,6 +132,11 @@ function sendHistoryRequest(dateStr, locStr) {
     request.send();
 }
 
+
+
+
+
+//adds a history div to the history display
 function addHistoryPeriod(timeStr, tempStr, condStr) {
     var historyPeriodDiv = document.createElement('div');
     historyPeriodDiv.className = 'historyPeriod';
@@ -170,9 +175,6 @@ function mapClick(lat, long) {
 
     clickable = false;
 
-    var zipText = document.getElementById('zipText');
-    var zipCode = zipText.value;
-
     //buttons from the page
     var btnForecast = document.getElementById('forecastbutton');
 
@@ -181,7 +183,7 @@ function mapClick(lat, long) {
     }, 10000);
 
     sendWeatherRequest(lat + ',' + long);
-    updateLocationText(lat, long);
+    getCityState(lat, long);
 }
 
 //handles click function for zip code
@@ -200,7 +202,7 @@ function zipEntryClick() {
     }, 10000);
 
     sendWeatherRequest(zipCode);
-
+    getZipLoc(zipCode);
 }
 
 //Sends weather request to wunderground
@@ -255,7 +257,35 @@ function sendWeatherRequest(urlParam) {
     request.send();
 }
 
-function updateLocationText(lat, long) {
+//gets the city and state from a zip code
+function getZipLoc(zip) {
+    var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + zip + '&sensor=true';
+
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+        if (request.status >= 200 && request.status < 400) {
+            var data = JSON.parse(request.responseText);
+            if (data['results'][0]) {
+                updateLocationText(data['results'][0].formatted_address);
+            } else {
+                updateLocationText(zip);
+            }
+
+        }
+    }
+
+    request.onerror = function () {
+        updateLocationText(zip);
+    }
+
+    request.send();
+}
+
+
+//gets the city and state from a latitude/longitude
+function getCityState(lat, long) {
     var geocoder = new google.maps.Geocoder();
     var latLng = new google.maps.LatLng(lat, long);
 
@@ -263,13 +293,19 @@ function updateLocationText(lat, long) {
         if (status == google.maps.GeocoderStatus.OK) {
             var locationText = document.getElementById('location');
             if (results[1]) {
-                locationText.innerHTML = results[1].formatted_address;
+                updateLocationText(results[1].formatted_address);
             } else {
-                locationText.innerHTML = lat + ', ' + long;
+                updateLocationText(lat + ', ' + long);
             }
             
         }
     });
+}
+
+//updates the location text upon a new location being selected on the map
+function updateLocationText(str) {
+    var locationText = document.getElementById('location');
+    locationText.innerHTML = str;
 }
 
 //Returns a pretty-looking date for overlay
@@ -354,11 +390,12 @@ function populateForecastDay(forId, date, hiTempText, loTempText, conditionsText
 
 }
 
-
+//click handler for forecast click
 function onForecastClick(index) {
     setDetailView(forecastText[index]);
 }
 
+//sets the forecast detail view 
 function setDetailView(wObj) {
     var fullDateSpan = document.getElementById('detailDate');
     fullDateSpan.innerHTML = wObj.Date;
@@ -370,6 +407,7 @@ function setDetailView(wObj) {
     precipitation.innerHTML = 'Precipitation: ' + wObj.Precipitation + 'in.';
 }
 
+//click handler for weather history button
 function updateWeatherHistory() {
     var dateInput = document.getElementById('dateSelector');
     var unformattedDate = dateInput.value;
