@@ -47,8 +47,8 @@ function hex(val) {
 }
 
 //Calculates the background color based on the time of day
-function calc_background(lat) {
-    var offset = (lat / 180) * 12;
+function calc_background(long) {
+    var offset = (long / 180) * 12;
 
     var hour = new Date().getUTCHours() + offset;
 
@@ -190,7 +190,7 @@ function mapClick(lat, long) {
         clickable = true;
     }, 10000);
 
-    document.body.style.backgroundColor = calc_background(lat);
+    document.body.style.backgroundColor = calc_background(long);
     sendWeatherRequest(lat + ',' + long);
     getCityState(lat, long);
 }
