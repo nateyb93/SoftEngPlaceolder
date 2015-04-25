@@ -19,9 +19,8 @@ var currentLat;
 var currentLong;
 
 window.onload = function () {
-    var color = calc_background();
 
-    document.body.style.backgroundColor = color;
+    document.body.style.backgroundColor = calc_background(-122.68);
 
     initMap();
 };
@@ -48,8 +47,17 @@ function hex(val) {
 }
 
 //Calculates the background color based on the time of day
-function calc_background() {
-    var hour = new Date().getHours();
+function calc_background(lat) {
+    var offset = (lat / 180) * 12;
+
+    var hour = new Date().getUTCHours() + offset;
+
+    if (hour < 0) {
+        hour = Math.floor(24 + hour);
+    } else if (hour > 24) {
+        hour = Math.floor(hour - 24);
+    }
+
     var baseVector = [0, 0, 0];
     var addVector = [0, 0, 0];
 
@@ -182,6 +190,7 @@ function mapClick(lat, long) {
         clickable = true;
     }, 10000);
 
+    document.body.style.backgroundColor = calc_background(lat);
     sendWeatherRequest(lat + ',' + long);
     getCityState(lat, long);
 }
